@@ -2,3 +2,4 @@
 *.zwc
 .zhistory
 zcompdump*
+.githooks/patterns.local

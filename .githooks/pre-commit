@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# .githooks/pre-commit — check sensitive data
+set -euo pipefail
+
+# Motifs génériques (universels, aucune donnée personnelle ici)
+PATTERNS=(
+  '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'    # email
+  'AKIA[0-9A-Z]{16}'                                   # clé AWS access key
+  'ghp_[A-Za-z0-9]{36}'                                # token GitHub
+  'sk-[A-Za-z0-9]{20,}'                                # clé API type OpenAI
+  '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'    # clé privée
+)
+
+# Charge des motifs supplémentaires locaux, spécifiques à cette machine,
+# jamais commités (voir .gitignore)
+LOCAL_PATTERNS_FILE="$(dirname "$0")/patterns.local"
+if [[ -f "$LOCAL_PATTERNS_FILE" ]]; then
+  while IFS= read -r line; do
+    [[ -z "$line" || "$line" == \#* ]] && continue
+    PATTERNS+=("$line")
+  done < "$LOCAL_PATTERNS_FILE"
+fi
+
+diff=$(git diff --cached -U0 -- . ':(exclude).githooks/**')
+found=0
+
+for pattern in "${PATTERNS[@]}"; do
+  matches=$(echo "$diff" | grep -E '^\+[^+]' | grep -Eio ".{0,15}${pattern}.{0,15}" || true)
+  if [[ -n "$matches" ]]; then
+    echo "❌ Invalid pattern detected (pattern: $pattern) :"
+    echo "$matches" | sed 's/^/   /'
+    found=1
+  fi
+done
+
+if [[ "$found" -eq 1 ]]; then
+  echo ""
+  echo "BLOCKED COMMIT. To force:"
+  echo "  git commit --no-verify"
+  exit 1
+fi
+
+exit 0
