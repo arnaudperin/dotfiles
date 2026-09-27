@@ -1,0 +1,21 @@
+filekinds:
+  directory: { foreground: "#569CD6" }
+  symlink: { foreground: "#4EC9B0" }
+  executable: { foreground: "#F44747" }
+  socket: { foreground: "#6A9955" }
+  special: { foreground: "#C586C0" }
+  pipe: { foreground: "#DCDCAA" }
+
+perms:
+  user_read: { foreground: "#6A9955" }
+  user_write: { foreground: "#DCDCAA" }
+  user_execute_file: { foreground: "#F44747" }
+  group_read: { foreground: "#6A9955" }
+  group_write: { foreground: "#DCDCAA" }
+  group_execute: { foreground: "#F44747" }
+  other_read: { foreground: "#6A9955" }
+  other_write: { foreground: "#DCDCAA" }
+  other_execute: { foreground: "#F44747" }
+  special_user_file: { foreground: "#C586C0" }
+  special_other: { foreground: "#C586C0" }
+  attribute: { foreground: "#4EC9B0" }
