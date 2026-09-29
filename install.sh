@@ -37,9 +37,10 @@ fi
 # --- 2. Homebrew packages ---
 # CLI formulae
 BREW_FORMULAE=(
-  stow
   eza
+  fzf
   starship
+  stow
   zsh-autosuggestions
   zsh-syntax-highlighting
 )

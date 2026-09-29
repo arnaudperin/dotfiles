@@ -23,5 +23,3 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # color
 export CLICOLOR=1
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
-
-bindkey -e
