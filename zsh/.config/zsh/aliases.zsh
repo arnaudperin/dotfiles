@@ -36,5 +36,8 @@ alias brewup="brew update && brew upgrade && brew cleanup"
 # network
 alias myip="curl ifconfig.me"
 
+# bat
+alias cat="bat --paging=never --style=plain"
+
 # reload conf 
 alias reload="source $ZDOTDIR/.zshrc"

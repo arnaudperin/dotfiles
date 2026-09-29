@@ -37,6 +37,8 @@ fi
 # --- 2. Homebrew packages ---
 # CLI formulae
 BREW_FORMULAE=(
+  bat
+  btop
   eza
   fzf
   starship

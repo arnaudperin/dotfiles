@@ -37,7 +37,7 @@ chmod +x install.sh
 
 This will:
 1. Install Homebrew if it's not already present
-2. Install the required CLI tools and apps via Homebrew (`stow`, `eza`, `starship`, `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf`,  WezTerm)
+2. Install the required CLI tools and apps via Homebrew (`stow`, `eza`, `starship`, `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf`, `bat`, `btop`, WezTerm)
 3. Create the necessary config directories
 4. Symlink every package into place with Stow
 5. Configure the local git `pre-commit` hook (see below) and create an empty `patterns.local` file for you to fill in
