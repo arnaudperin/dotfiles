@@ -41,3 +41,6 @@ alias cat="bat --paging=never --style=plain"
 
 # reload conf 
 alias reload="source $ZDOTDIR/.zshrc"
+
+# others
+alias c="clear"
