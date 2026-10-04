@@ -37,14 +37,15 @@ fi
 # --- 2. Homebrew packages ---
 # CLI formulae
 BREW_FORMULAE=(
-  bat
-  btop
-  eza
-  fzf
-  starship
   stow
+  eza
+  starship
   zsh-autosuggestions
   zsh-syntax-highlighting
+  fzf
+  bat
+  btop
+  tmux
 )
 
 # GUI apps (casks)
@@ -77,13 +78,15 @@ mkdir -p "$HOME/.config"
 mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 
 # --- 4. Symlinks via Stow ---
-# Add each new package here as it becomes ready
-# (e.g. once nvim/tmux configs exist: STOW_PACKAGES+=(nvim tmux))
+# Add each new package here as it becomes ready (e.g. once nvim is
+# configured: STOW_PACKAGES+=(nvim))
 STOW_PACKAGES=(
   zsh
   eza
   starship
   wezterm
+  btop
+  tmux
 )
 
 echo "==> Creating symlinks with Stow"
@@ -111,7 +114,21 @@ PATTERNS_EOF
   fi
 fi
 
+# --- 6. TPM (tmux plugin manager) ---
+# Not a Homebrew package or a Stow package: it's a git repo that tmux's
+# own `run` directive expects to find at this exact path.
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+if [[ -d "$TPM_DIR" ]]; then
+  echo "==> TPM already present"
+else
+  echo "==> Cloning TPM (tmux plugin manager)"
+  git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+fi
+
 echo ""
 echo "==> Done."
 echo "    Restart your terminal, or run:"
 echo "    source ~/.zshenv && source \"\$ZDOTDIR/.zshrc\""
+echo ""
+echo "    Then open tmux and press 'prefix + I' (capital i) to install"
+echo "    tmux plugins (tmux-resurrect, tmux-continuum)."

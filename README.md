@@ -6,10 +6,12 @@ Personal macOS configuration files, managed with [GNU Stow](https://www.gnu.org/
 
 | Package    | What it configures                                      |
 |------------|----------------------------------------------------------|
-| `zsh`      | Shell config: `.zshenv`, PATH/`cdpath`/`fpath`, history and completion options, aliases, Starship init, plugins (`zsh-autosuggestions`, `zsh-syntax-highlighting`) |
+| `zsh`      | Shell config: `.zshenv`, PATH/`cdpath`/`fpath`, history and completion options, aliases, Starship init, plugins (`zsh-autosuggestions`, `zsh-syntax-highlighting`), `fzf`-powered `h` history search function |
 | `eza`      | Color theme for `eza` (used as a drop-in `ls` replacement) |
 | `starship` | Prompt configuration (`starship.toml`)                   |
 | `wezterm`  | Terminal emulator configuration (`wezterm.lua`)           |
+| `btop`     | System monitor config: vim-style navigation, transparent background |
+| `tmux`     | Terminal multiplexer config: custom prefix, vi-style pane navigation, true color, Rose Pine Moon status bar, session persistence (`tmux-resurrect`/`tmux-continuum`) |
 
 More packages (`nvim`, `tmux`, ...) will be added here as they get configured.
 
@@ -23,7 +25,7 @@ wezterm/.config/wezterm/wezterm.lua -> ~/.config/wezterm/wezterm.lua
 
 ## Requirements
 
-- macOS on Apple Silicon (paths assume `/opt/homebrew`; adjust for Intel Macs)
+- macOS on Apple Silicon (paths assume `/opt/homebrew`; adjust for Intel Macs). `install.sh` checks this and exits with an error on any other OS/architecture.
 - [Homebrew](https://brew.sh) (the install script installs it automatically if missing)
 
 ## Install on a new machine
@@ -37,12 +39,13 @@ chmod +x install.sh
 
 This will:
 1. Install Homebrew if it's not already present
-2. Install the required CLI tools and apps via Homebrew (`stow`, `eza`, `starship`, `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf`, `bat`, `btop`, WezTerm)
+2. Install the required CLI tools and apps via Homebrew (`stow`, `eza`, `starship`, `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf`, `bat`, `btop`, `tmux`, WezTerm)
 3. Create the necessary config directories
 4. Symlink every package into place with Stow
 5. Configure the local git `pre-commit` hook (see below) and create an empty `patterns.local` file for you to fill in
+6. Clone [TPM](https://github.com/tmux-plugins/tpm) (tmux's plugin manager) if it isn't already present
 
-Once it finishes, restart your terminal (or `source ~/.zshenv && source "$ZDOTDIR/.zshrc"`).
+Once it finishes, restart your terminal (or `source ~/.zshenv && source "$ZDOTDIR/.zshrc"`). Then open `tmux` and press `prefix + I` (capital i) to install the tmux plugins (`tmux-resurrect`, `tmux-continuum`) — TPM only clones plugin repos once you trigger this from inside tmux, `install.sh` doesn't do it automatically.
 
 ## Adding or updating a package manually
 
@@ -71,6 +74,17 @@ To bypass the hook for a deliberate false positive:
 ```zsh
 git commit --no-verify
 ```
+
+## Notable tools
+
+- **`h` (fuzzy history search)** — a shell function (in `aliases.zsh`) that opens `fzf` over your command history instead of zsh's built-in `Ctrl+R` search. Usage:
+  ```zsh
+  h git      # fzf pre-filtered on "git"
+  h          # fzf over the full history, no pre-filter
+  ```
+  Select an entry with `Enter` to load it into your command line for editing (it does not execute automatically).
+
+- **tmux prefix is `Ctrl+a`**, not the default `Ctrl+b`. Session layout and pane contents are auto-saved every 15 minutes and restored automatically when tmux starts (via `tmux-continuum`), which matters in particular on a remote/headless machine accessed over SSH.
 
 ## Notes
 
